@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Basic Table</title>
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <style>
+      body {
+        font-family: Sans-Serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Basic Table</h1>
+      <hr>
+      <div id="table"></div>
+    </div>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+    <script>
+      new gridjs.Grid({
+        columns: [
+          { id: 'name', name: 'Name' },
+          { id: 'age', name: 'Age' },
+          { id: 'address', name: 'Address', sort: false },
+          { id: 'phone', name: 'Phone Number', sort: false },
+          { id: 'email', name: 'Email' },
+        ],
+        data: [
+          {% for user in users %}
+            {
+              name: '{{ user.name }}',
+              age: {{ user.age }},
+              address: '{{ user.address }}',
+              phone: '{{ user.phone }}',
+              email: '{{ user.email }}'
+            },
+          {% endfor %}
+        ],
+        search: {
+          selector: (cell, rowIndex, cellIndex) => [0, 1, 4].includes(cellIndex) ? cell : null,
+        },
+        sort: true,
+        pagination: true,
+      }).render(document.getElementById('table'));
+    </script>
+  </body>
+</html>
