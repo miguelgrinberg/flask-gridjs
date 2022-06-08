@@ -34,7 +34,7 @@
       new gridjs.Grid({
         columns: [
           { id: 'id', 'hidden': true },
-          { id: 'name', name: 'Name', 'attributes': editableCellAttributes},
+          { id: 'name', name: 'Name', 'attributes': editableCellAttributes },
           { id: 'age', name: 'Age' },
           { id: 'address', name: 'Address', sort: false, 'attributes': editableCellAttributes },
           { id: 'phone', name: 'Phone Number', sort: false },
@@ -76,19 +76,6 @@
 
       let savedValue;
 
-      const saveCell = elem => {
-        if (savedValue !== elem.textContent) {
-          fetch('/api/data', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              id: elem.dataset.elementId,
-              [elem.dataset.columnId]: elem.textContent
-            }),
-          });
-        }
-      };
-
       tableDiv.addEventListener('focusin', ev => {
         if (ev.target.tagName === 'TD') {
           savedValue = ev.target.textContent;
@@ -97,7 +84,16 @@
 
       tableDiv.addEventListener('focusout', ev => {
         if (ev.target.tagName === 'TD') {
-          saveCell(ev.target);
+          if (savedValue !== ev.target.textContent) {
+            fetch('/api/data', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                id: ev.target.dataset.elementId,
+                [ev.target.dataset.columnId]: ev.target.textContent
+              }),
+            });
+          }
           savedValue = undefined;
         }
       });
