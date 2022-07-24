@@ -26,7 +26,9 @@
           { id: 'age', name: 'Age' },
           { id: 'address', name: 'Address', sort: false },
           { id: 'phone', name: 'Phone Number', sort: false },
-          { id: 'email', name: 'Email' },
+          { id: 'email', name: 'Email', formatter: (cell, row) => {
+            return gridjs.html('<a href="mailto:' + cell + '">' + cell + '</a>');
+          }},
         ],
         server: {
           url: '/api/data',
